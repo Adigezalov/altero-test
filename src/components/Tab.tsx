@@ -1,15 +1,16 @@
-import React, {useState} from 'react'
+import React, {useState, FC} from 'react'
 import {IRegion} from '../interfaces/IRegion'
+import Icon from './Icon'
 import '../styles/Tab.css'
 
 type TabProps = {
 	region: IRegion,
-	viewRegions: Function,
+	viewRegions: (data: IRegion[]) => JSX.Element[],
 	tab: number,
 	parent: boolean
 }
 
-const Tab = ({region, viewRegions, tab, parent}: TabProps) => {
+const Tab = ({region, viewRegions, tab, parent}: TabProps): JSX.Element => {
 	const [open, setOpen] = useState<boolean>(false)
 
 	const openTab = (): void => {
@@ -19,11 +20,8 @@ const Tab = ({region, viewRegions, tab, parent}: TabProps) => {
 	return (
 		<div>
 			<div
-				className='root'
-				style={{
-					marginLeft: tab * 20,
-					cursor: parent ? 'pointer' : 'auto'
-				}}
+				className={parent ? 'root parent' : 'root'}
+				style={{marginLeft: tab * 20}}
 				onClick={openTab}
 			>
 				<div className='content'>
@@ -31,17 +29,15 @@ const Tab = ({region, viewRegions, tab, parent}: TabProps) => {
 					<div className='icon'>
 						{
 							open
-							? <img src={process.env.PUBLIC_URL + 'images/down.svg'} alt="down"/>
-							: <img src={process.env.PUBLIC_URL + 'images/up.svg'} alt="up"/>
+							? <Icon src={'images/down.svg'}/>
+							: <Icon src={'images/up.svg'}/>
 						}
 					</div>}
-					<div className='icon'>
-						<img src={process.env.PUBLIC_URL + 'images/secure.svg'} alt="secure"/>
-					</div>
+					<Icon src={'images/secure.svg'}/>
 					{region.name}
 				</div>
 			</div>
-			{open && viewRegions(region.children)}
+			{open && viewRegions(region.children!)}
 		</div>
 	)
 }

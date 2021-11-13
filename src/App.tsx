@@ -10,7 +10,7 @@ if (process.env.NODE_ENV === 'development') {
 
 const URL:string = '/api/regions'
 
-const App:FC = () => {
+const App:FC = (): JSX.Element => {
 	const [regions, setRegions] = useState<IRegion[]>([])
 
 	useEffect(() => {
@@ -21,16 +21,15 @@ const App:FC = () => {
 			})
 	}, [])
 
-
 	const sort = (data:IRegion[]): void => {
-		const regions:IRegion[] = data.reduce((children:Function, item:IRegion) => {
-			children(item.path.replace(/(^|\.)\w+$/g, "")).push({
-				...item,
-				children: children(item.path)
+		const regions:IRegion[] = data.reduce((children: (data: string) => IRegion[], region:IRegion) => {
+			children(region.path.replace(/(^|\.)\w+$/g, "")).push({
+				...region,
+				children: children(region.path),
 			});
+
 			return children;
-		}, function (key:string):[] {
-			// @ts-ignore
+		}, function (this:any, key:string):[] {
 			return this[key] || (this[key] = [])
 		}.bind({}))("");
 
@@ -45,7 +44,7 @@ const App:FC = () => {
 								tab={levels.length}
 								parent={!!region.children?.length}
 								viewRegions={viewRegions}/>
-	})
+		})
 	)
 
 	return <div className='app'>

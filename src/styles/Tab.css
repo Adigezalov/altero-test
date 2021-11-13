@@ -4,15 +4,15 @@
     border-radius: 5px;
 }
 
-.root:hover {
+.parent {
+    cursor: pointer;
+}
+
+.parent:hover {
     background-color: #808080;
 }
 
 .content {
     display: flex;
     align-items: center
-}
-
-.icon {
-    margin-right: 15px
 }
