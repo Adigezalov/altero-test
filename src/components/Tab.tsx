@@ -5,12 +5,12 @@ import '../styles/Tab.css'
 
 type TabProps = {
 	region: IRegion,
-	viewRegions: (data: IRegion[]) => JSX.Element[],
+	viewRegions(data: IRegion[]): JSX.Element[],
 	tab: number,
 	parent: boolean
 }
 
-const Tab = ({region, viewRegions, tab, parent}: TabProps): JSX.Element => {
+const Tab: FC<TabProps> = ({region, viewRegions, tab, parent}): JSX.Element => {
 	const [open, setOpen] = useState<boolean>(false)
 
 	const openTab = (): void => {
