@@ -1,53 +1,47 @@
 import React, {useState} from 'react'
-import SecureIcon from './SecureIcon'
-import DownIcon from './DownIcon'
-import UpIcon from './UpIcon'
+import {IRegion} from '../interfaces/IRegion'
+import '../styles/Tab.css'
 
-const Tab = ({region, viewRegions, tab, parent}: any) => {
-	const [hover, setHover] = useState(false)
-	const [open, setOpen] = useState(false)
+type TabProps = {
+	region: IRegion,
+	viewRegions: Function,
+	tab: number,
+	parent: boolean
+}
 
-	const style = {
-		root: {
-			display: 'inline-block',
-			marginLeft: tab * 20,
-			paddingLeft: 20,
-			paddingTop: 10,
-			paddingRight: 20,
-			paddingBottom: 10,
-			backgroundColor: hover ? '#808080' : 'transparent',
-			cursor: parent ? 'pointer' : 'auto',
-			borderRadius: 5,
-		},
-		content: {display: 'flex', alignItems: 'center'},
-		icon: {marginRight: 15},
-	}
+const Tab = ({region, viewRegions, tab, parent}: TabProps) => {
+	const [open, setOpen] = useState<boolean>(false)
 
-	const openTab = () => {
+	const openTab = (): void => {
 		setOpen(!open)
 	}
 
 	return (
 		<div>
 			<div
-				style={style.root}
-				onMouseEnter={() => {
-					setHover(parent)
-				}}
-				onMouseLeave={() => {
-					setHover(false)
+				className='root'
+				style={{
+					marginLeft: tab * 20,
+					cursor: parent ? 'pointer' : 'auto'
 				}}
 				onClick={openTab}
 			>
-				<div style={style.content}>
-					{parent && <div style={style.icon}>{open ? <DownIcon /> : <UpIcon />}</div>}
-					<div style={style.icon}>
-						<SecureIcon />
+				<div className='content'>
+					{parent &&
+					<div className='icon'>
+						{
+							open
+							? <img src={process.env.PUBLIC_URL + 'images/down.svg'} alt="down"/>
+							: <img src={process.env.PUBLIC_URL + 'images/up.svg'} alt="up"/>
+						}
+					</div>}
+					<div className='icon'>
+						<img src={process.env.PUBLIC_URL + 'images/secure.svg'} alt="secure"/>
 					</div>
 					{region.name}
 				</div>
 			</div>
-			{open && viewRegions(region.path)}
+			{open && viewRegions(region.children)}
 		</div>
 	)
 }
